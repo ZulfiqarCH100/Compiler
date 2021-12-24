@@ -204,55 +204,71 @@ Loop
 								DivMul 1
 									null
 							Arithmetic 1
-								null
-				Declaration 3
-					null
-			Operator ;
-		Assignment
-			Variable
-				Identifier (a)
-			Operator =
-			Assignment 2
-				Variable
-					Operator --
-					Identifier (b)
-				Arithmetic 2
-					DivMul 1
-						null
-				Arithmetic 1
-					null
-			Operator ;
-		Assignment
-			Variable
-				Identifier (b)
-			Operator =
-			Assignment 2
-				Variable
-					Identifier (temp)
-				Arithmetic 2
-					DivMul 1
-						null
-				Arithmetic 1
-					null
-			Operator ;
-		I/O
-			println
-			Operator (
-			Message
-				Arithmetic
-					DivMul
-						Vals
-							Variable
-								Identifier (temp)
-						DivMul 1
+								Operator +
+								DivMul
+									Vals
+										Variable
+											Identifier (c)
+									DivMul 1
+										null
+								Arithmetic 1
+									Operator +
+									DivMul
+										Vals
+											Variable
+												Identifier (d)
+										DivMul 1
+											null
+									Arithmetic 1
+										null
+						Declaration 3
 							null
-					Arithmetic 1
-						null
-			Operator )
-			Operator ;
-		Assignment
-			Variable
-				Identifier (c)
-				Operator ++
-			Operator ;
-	Operator }
+					Operator ;
+				Assignment
+					Variable
+						Identifier (a)
+					Operator =
+					Assignment 2
+						Variable
+							Operator --
+							Identifier (b)
+						Arithmetic 2
+							DivMul 1
+								null
+						Arithmetic 1
+							null
+					Operator ;
+				Assignment
+					Variable
+						Identifier (b)
+					Operator =
+					Assignment 2
+						Variable
+							Identifier (temp)
+						Arithmetic 2
+							DivMul 1
+								null
+						Arithmetic 1
+							null
+					Operator ;
+				I/O
+					println
+					Operator (
+					Message
+						Arithmetic
+							DivMul
+								Vals
+									Variable
+										Identifier (temp)
+								DivMul 1
+									null
+							Arithmetic 1
+								null
+					Operator )
+					Operator ;
+				Assignment
+					Variable
+						Identifier (c)
+						Operator ++
+					Operator ;
+			Operator }

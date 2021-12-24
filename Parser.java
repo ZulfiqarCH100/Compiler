@@ -795,7 +795,13 @@ public class Parser {
     private String toPrint = "";
 
     private String newTmp() {
-        return ("T" + String.valueOf(tempCount++));
+        String temp = "T" + String.valueOf(tempCount++);
+        name = temp;
+        newSymbol = true;
+        info.type = "int";
+        info.location = relativeAddress;
+        updateSymbolTable();
+        return (temp);
     }
 
     private void quad() {

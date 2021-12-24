@@ -20,7 +20,7 @@ println(a);
 println(b);
 while c < num:
 {
-    int: temp = a+b;
+    int: temp = a+b+c+d;
     a = --b;
     b = temp;
     println(temp);

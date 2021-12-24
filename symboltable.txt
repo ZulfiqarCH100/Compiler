@@ -4,3 +4,6 @@ temp int 17
 my_char char 4
 c int 13
 num int 0
+T0 int 21
+T1 int 25
+T2 int 29

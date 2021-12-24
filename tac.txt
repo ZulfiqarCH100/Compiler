@@ -15,13 +15,15 @@
 14: OUT b
 15: OUT \n
 16: IF c < num GOTO 18
-17: GOTO 27
-18: T0 = a + b
-19: temp = T0
-20: b = b-1
-21: a = b
-22: b = temp
-23: OUT temp
-24: OUT \n
-25: c = c+1
-26: GOTO 16
+17: GOTO 29
+18: T0 = c + d
+19: T1 = b + T0
+20: T2 = a + T1
+21: temp = T2
+22: b = b-1
+23: a = b
+24: b = temp
+25: OUT temp
+26: OUT \n
+27: c = c+1
+28: GOTO 16
