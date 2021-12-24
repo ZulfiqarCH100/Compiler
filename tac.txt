@@ -1,0 +1,27 @@
+0: my_char = 'd'
+1: OUT "my char contains: "
+2: OUT my_char
+3: OUT \n
+4: OUT "enter a number"
+5: OUT \n
+6: IN num
+7: a = 0
+8: b = 1
+9: c = 0
+10: OUT "The fibonacci seq is: "
+11: OUT \n
+12: OUT a
+13: OUT \n
+14: OUT b
+15: OUT \n
+16: IF c < num GOTO 18
+17: GOTO 27
+18: T0 = a + b
+19: temp = T0
+20: b = b-1
+21: a = b
+22: b = temp
+23: OUT temp
+24: OUT \n
+25: c = c+1
+26: GOTO 16

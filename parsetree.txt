@@ -1,0 +1,258 @@
+Declaration
+	Datatype int
+	Operator :
+	Declaration 1
+		Declaration 2
+			Variable
+				Identifier (num)
+		Declaration 3
+			null
+	Operator ;
+Declaration
+	Datatype char
+	Operator :
+	Declaration 1
+		Declaration 2
+			Variable
+				Identifier (my_char)
+		Declaration 3
+			null
+	Operator ;
+Assignment
+	Variable
+		Identifier (my_char)
+	Operator =
+	Assignment 2
+		Arithmetic
+			DivMul
+				Vals
+					CONST ('d')
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+	Operator ;
+I/O
+	print
+	Operator (
+	Message
+		CONST ("my char contains: ")
+	Operator )
+	Operator ;
+I/O
+	println
+	Operator (
+	Message
+		Arithmetic
+			DivMul
+				Vals
+					Variable
+						Identifier (my_char)
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+	Operator )
+	Operator ;
+I/O
+	println
+	Operator (
+	Message
+		CONST ("enter a number")
+	Operator )
+	Operator ;
+I/O
+	Input
+	Operator ->
+	Variable
+		Identifier (num)
+	Operator ;
+Declaration
+	Datatype int
+	Operator :
+	Declaration 1
+		Declaration 2
+			Variable
+				Identifier (a)
+			Operator =
+			Assignment 2
+				Arithmetic
+					DivMul
+						Vals
+							CONST (0)
+						DivMul 1
+							null
+					Arithmetic 1
+						null
+		Declaration 3
+			Operator ,
+			Declaration 1
+				Declaration 2
+					Variable
+						Identifier (b)
+					Operator =
+					Assignment 2
+						Arithmetic
+							DivMul
+								Vals
+									CONST (1)
+								DivMul 1
+									null
+							Arithmetic 1
+								null
+				Declaration 3
+					Operator ,
+					Declaration 1
+						Declaration 2
+							Variable
+								Identifier (c)
+							Operator =
+							Assignment 2
+								Arithmetic
+									DivMul
+										Vals
+											CONST (0)
+										DivMul 1
+											null
+									Arithmetic 1
+										null
+						Declaration 3
+							null
+	Operator ;
+I/O
+	println
+	Operator (
+	Message
+		CONST ("The fibonacci seq is: ")
+	Operator )
+	Operator ;
+I/O
+	println
+	Operator (
+	Message
+		Arithmetic
+			DivMul
+				Vals
+					Variable
+						Identifier (a)
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+	Operator )
+	Operator ;
+I/O
+	println
+	Operator (
+	Message
+		Arithmetic
+			DivMul
+				Vals
+					Variable
+						Identifier (b)
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+	Operator )
+	Operator ;
+Loop
+	while
+	Expression
+		Arithmetic
+			DivMul
+				Vals
+					Variable
+						Identifier (c)
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+		Relation
+			Operator <
+		Arithmetic
+			DivMul
+				Vals
+					Variable
+						Identifier (num)
+				DivMul 1
+					null
+			Arithmetic 1
+				null
+	Operator :
+	Operator {
+		Declaration
+			Datatype int
+			Operator :
+			Declaration 1
+				Declaration 2
+					Variable
+						Identifier (temp)
+					Operator =
+					Assignment 2
+						Variable
+							Identifier (a)
+						Arithmetic 2
+							DivMul 1
+								null
+						Arithmetic 1
+							Operator +
+							DivMul
+								Vals
+									Variable
+										Identifier (b)
+								DivMul 1
+									null
+							Arithmetic 1
+								null
+				Declaration 3
+					null
+			Operator ;
+		Assignment
+			Variable
+				Identifier (a)
+			Operator =
+			Assignment 2
+				Variable
+					Operator --
+					Identifier (b)
+				Arithmetic 2
+					DivMul 1
+						null
+				Arithmetic 1
+					null
+			Operator ;
+		Assignment
+			Variable
+				Identifier (b)
+			Operator =
+			Assignment 2
+				Variable
+					Identifier (temp)
+				Arithmetic 2
+					DivMul 1
+						null
+				Arithmetic 1
+					null
+			Operator ;
+		I/O
+			println
+			Operator (
+			Message
+				Arithmetic
+					DivMul
+						Vals
+							Variable
+								Identifier (temp)
+						DivMul 1
+							null
+					Arithmetic 1
+						null
+			Operator )
+			Operator ;
+		Assignment
+			Variable
+				Identifier (c)
+				Operator ++
+			Operator ;
+	Operator }
