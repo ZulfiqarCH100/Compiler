@@ -227,14 +227,14 @@ public class Parser {
             match(lookAhead.name);
 
             if (fix != null) {
-                quad(varName + " = " + varName + fix.charAt(0) + "1");
+                quad(varName + " = " + varName + " " + fix.charAt(0) + " 1");
             }
         } else {
             terminate("Identifier Expected");
         }
         String secondFix = Fix();
         if (secondFix != null)
-            quad(varName + " = " + varName + secondFix.charAt(0) + "1");
+            quad(varName + " = " + varName + " " + secondFix.charAt(0) + " 1");
 
         if (fix == null) { // cannot allow postfix if prefix is already true.
             fix = secondFix;

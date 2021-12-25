@@ -1,14 +1,81 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class VM {
     private FileReader fr = null;
     private BufferedReader reader;
 
+    // Stores the lines of three adress code to execute.
     List<String> lines = new ArrayList<String>();
+    int currentLine = 0;
+    // stores the symbol table.
+    HashMap<String, Symbol> symbolTable = new HashMap<>();
+    // Byte array to store char and int values of all variables. We have relative
+    // adresses in symbol table to help traverse this.
+    byte[] data = null;
+    int dataSize = 0;
+
+    boolean[] defined = null; // Contains info about a variable's value being defined or not.
+
+    private void print(String temp) {
+        System.out.println(temp);
+    }
+
+    private void terminate(String error) {
+        print(error);
+        System.exit(1);
+    }
+
+    // Converts an int into an array of 4 bytes to store in the data array.
+    public void storeInt(String name, int value) {
+        int address = symbolTable.get(name).location;
+        defined[address] = true;
+        byte[] temp = new byte[4];
+        temp = ByteBuffer.allocate(4).putInt(value).array();
+        for (int i = 0; i < 4; i++) {
+            data[i + address] = temp[i];
+        }
+
+    }
+
+    // Gets an integer from the byte array at a relative address.
+    public int getInt(String name) {
+        int address = symbolTable.get(name).location;
+        byte[] toConvert = new byte[4]; // Temp array to store the extracted 4 bytes.
+
+        if (defined[address] == true) {
+            for (int i = 0; i < 4; i++) {
+                toConvert[i] = data[address + i];
+            }
+
+            ByteBuffer bb = ByteBuffer.wrap(toConvert);
+            return bb.getInt();
+        } else
+            terminate("Variable " + name + " is accessed but it's value has not been initalized");
+        return -1;
+    }
+
+    public char getChar(String name) {
+        int address = symbolTable.get(name).location;
+        if (defined[address] == true)
+            return (char) data[address];
+        else
+            terminate("Variable " + name + " is accessed but it's value has not been initalized");
+        return 0;
+    }
+
+    public void storeChar(String name, char temp) {
+        int address = symbolTable.get(name).location;
+        defined[address] = true;
+        byte toStore = (byte) temp;
+        data[address] = toStore;
+    }
 
     public void setFileReader(String filename) {
         fr = null;
@@ -21,7 +88,9 @@ public class VM {
 
     // We need to read the whole file once into an array so we can jump between line
     // numbers.
-    public void readFile() {
+    public void readTAC() {
+        setFileReader("tac.txt");
+        reader = new BufferedReader(fr);
         while (true) {
             try {
                 String temp = reader.readLine(); // Reading a line.
@@ -36,21 +105,199 @@ public class VM {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        lines.add("end"); // indicator that the code is finished.
+    }
 
+    public void readSymbolTable() {
+        setFileReader("symboltable.txt");
+        reader = new BufferedReader(fr);
+        int max = 0;
+        String maxType = null;
+
+        while (true) {
+            try {
+                String temp = reader.readLine(); // Reading a line.
+
+                // Removing the line number and putting into list.
+                if (temp == null)
+                    break;
+                else {
+                    int firstSpace = temp.indexOf(" ");
+                    String substring = temp.substring(firstSpace + 1, temp.length());
+                    int secondSpace = substring.indexOf(" ");
+
+                    // Reading symbols
+                    String name = temp.substring(0, firstSpace);
+                    String type = substring.substring(0, secondSpace);
+                    int address = Integer.parseInt(substring.substring(secondSpace + 1, substring.length()));
+
+                    if (address > max) {
+                        max = address;
+                        maxType = type;
+                    }
+
+                    Symbol s = new Symbol(type, address);
+                    symbolTable.put(name, s);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        // Allocating space in data segment.
+        if (maxType.equals("char"))
+            dataSize = max;
+        else
+            dataSize = max + 3;
+
+        data = new byte[dataSize];
+        defined = new boolean[dataSize];
+
+        for (int i = 0; i < dataSize; i++) {
+            defined[i] = false;
         }
     }
 
     public void debug() {
+        print("The code is:");
         for (int i = 0; i < lines.size(); i++) {
             System.out.println(lines.get(i));
+        }
+
+        print("\n\n\nThe symbol table is: ");
+        symbolTable.forEach((k, v) -> {
+            print(k + " " + v.type + " " + String.valueOf(v.location)
+                    + "\n");
+        });
+    }
+
+    private void OUT(String rest) {
+        int comma = rest.indexOf("\"");
+        if (comma != -1)
+            // If we have to print a constant string
+            System.out.print(rest.substring(comma + 1, rest.length() - 1));
+        else if (rest.contains("\\n")) {
+            // if we have to print a newline
+            print("");
+        } else {
+            // if we have to print value of a variable.
+            Symbol var = symbolTable.get(rest);
+            if (var.type.equals("int")) {
+                int temp = getInt(rest);
+                System.out.print(temp);
+            } else if (var.type.equals("char")) {
+                char temp = getChar(rest);
+                System.out.print(temp);
+            }
+        }
+
+    }
+
+    public void IN(String rest) {
+        String type = symbolTable.get(rest).type;
+        if (type.equals("int")) {
+            Scanner in = new Scanner(System.in);
+            try {
+                int read = in.nextInt();
+                storeInt(rest, read);
+            } catch (Exception e) {
+                terminate("Wrong input given to int variable, Terminating");
+            }
+            in.close();
+        }
+        if (type.equals("char")) {
+            Scanner in = new Scanner(System.in);
+            String read = in.nextLine();
+            if (read.length() != 1)
+                storeChar(rest, read.charAt(0));
+            else
+                terminate("Invalid input to char, Terminating");
+            in.close();
+        }
+
+    }
+
+    private int GOTO(String rest) {
+        return Integer.parseInt(rest);
+    }
+
+    private void assignment(String rest, String leftSideVar) {
+        int equals = rest.indexOf("=");
+        rest = rest.substring(equals + 2, rest.length());
+        int space = rest.indexOf(" ");
+
+        if (space == -1) {
+            // Just assignment.
+            if (rest.matches("[0-9]+")) {
+                // if right side is a constant int.
+                if (symbolTable.get(leftSideVar).type.equals("int")) {
+                    storeInt(leftSideVar, Integer.parseInt(rest));
+                } else
+                    terminate("Cannot store int into a non int varible " + leftSideVar);
+            } else if (rest.charAt(0) == '\'') {
+                // if constant char.
+                rest = rest.substring(1);
+                int comma = rest.indexOf('\'');
+                String c = rest.substring(0, comma);
+                if (c.length() != 1) {
+                    terminate("Char variable " + leftSideVar + " cannot store strings");
+                } else if (symbolTable.get(leftSideVar).type.equals("char")) {
+                    storeChar(leftSideVar, rest.charAt(0));
+                } else
+                    terminate("Cannot store char value in non char variable " + leftSideVar);
+            } else {
+                // Another variable.
+                String type = symbolTable.get(leftSideVar).type;
+                if (!type.equals(symbolTable.get(rest).type))
+                    terminate("Type mismatch on line " + String.valueOf(currentLine));
+                else if (type.equals("int"))
+                    storeInt(leftSideVar, getInt(rest));
+                else if (type.equals("char"))
+                    storeChar(leftSideVar, getChar(rest));
+            }
+
+        } else {
+            // Calculation.
+        }
+    }
+
+    // Execute the TAC.
+    public void execute() {
+        while (true) {
+            String line = lines.get(currentLine);
+            int space = line.indexOf(" ");
+            String command = null;
+            String rest = null;
+
+            if (space != -1) {
+                command = line.substring(0, space);
+                rest = line.substring(space + 1, line.length());
+            } else
+                command = "end";
+
+            if (command.equals("OUT")) {
+                OUT(rest);
+                currentLine++;
+            } else if (command.equals("end"))
+                terminate("Code execution completed");
+            else if (command.equals("IN")) {
+                IN(rest);
+                currentLine++;
+            } else if (command.equals("GOTO")) {
+                // currentLine = GOTO(rest);
+                // TODO: Remove the line below.
+                currentLine++;
+            } else {
+                assignment(rest, command);
+                currentLine++;
+            }
         }
     }
 
     public static void main(String[] args) {
         VM vm = new VM();
-        vm.setFileReader("tac.txt");
-        vm.reader = new BufferedReader(vm.fr);
-        vm.readFile();
-        vm.debug();
+        vm.readTAC();
+        vm.readSymbolTable();
+        vm.execute();
     }
 }

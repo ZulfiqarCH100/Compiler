@@ -20,10 +20,10 @@
 19: T1 = b + T0
 20: T2 = a + T1
 21: temp = T2
-22: b = b-1
+22: b = b - 1
 23: a = b
 24: b = temp
 25: OUT temp
 26: OUT \n
-27: c = c+1
+27: c = c + 1
 28: GOTO 16
