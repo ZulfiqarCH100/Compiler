@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Parser {
-    private FileReader fr = null;
+    public FileReader fr = null;
     public FileWriter parsetree = null;
-    private BufferedReader reader;
+    public BufferedReader reader;
     int tabs = 0;
-    private Token lookAhead;
+    public Token lookAhead;
     private String fix = null;
 
     List<String> lines = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class Parser {
         return lookAhead.name.equals(temp);
     }
 
-    private Token getNextToken() {
+    public Token getNextToken() {
         Token token = new Token();
         String temp = null;
         try {
@@ -805,7 +805,7 @@ public class Parser {
         tabs--;
     }
 
-    private void Code() {
+    public void Code() {
 
         Code1();
         if (!lookAhead.name.equals("end") && !lookAhead.type.equals("end")) {
@@ -816,7 +816,7 @@ public class Parser {
             return;
     }
 
-    private void setFileReader(String filename) {
+    public void setFileReader(String filename) {
         fr = null;
         try {
             fr = new FileReader(filename);
