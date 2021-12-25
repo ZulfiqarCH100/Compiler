@@ -386,21 +386,41 @@ public class Parser {
 
         String toReturn = "";
 
-        if (lookAhead.name.startsWith("\"")) {
+        if (lookAhead.name.startsWith("\'")) {
             printTabs(++tabs);
             writeToFile("CONST " + "(" + lookAhead.name + ")");
             toReturn = lookAhead.name;
             match(lookAhead.name);
             tabs--;
             return toReturn;
-        } else if (lookAhead.type.equals("CONST") || tokenEquals("(")) {
+        } else if (lookAhead.name.startsWith("\"")) {
+            terminate("Cannot store strings yet");
+        } else if (lookAhead.name.equals("-")) {
+            match(lookAhead.name);
+            toReturn = toReturn + "-";
+        }
+
+        if (tokenEquals("\'") && toReturn.equals("-")) {
+            terminate("Char cannot be negative");
+            return null;
+        } else if (tokenEquals("(")) {
             String temp = Arithmetic();
+            tabs--;
+            if (temp.startsWith("-") && toReturn.equals("-"))
+                return temp.substring(1);
+            return toReturn + temp;
+        } else if (lookAhead.type.equals("CONST")) {
+            // String temp = Arithmetic();
+            String var = Vals();
+            String temp = Arithmetic2(toReturn + var);
             tabs--;
             return temp;
         } else {
             String var = Variable();
             if (tokenEquals("=")) {
                 match("=");
+                if (toReturn.equals("-"))
+                    terminate("Negative variables cant be on the left side of =");
                 printTabs(++tabs);
                 writeToFile("Operator =");
                 String temp = var + " = ";
@@ -409,7 +429,7 @@ public class Parser {
                 tabs--;
                 return var;
             } else {
-                String temp = Arithmetic2(var);
+                String temp = Arithmetic2(toReturn + var);
                 tabs--;
                 return temp;
             }
@@ -544,20 +564,36 @@ public class Parser {
         printTabs(++tabs);
         writeToFile("Vals");
         String toReturn = "";
+
+        if (lookAhead.name.equals("-") || lookAhead.name.equals("+")) {
+            toReturn = toReturn + lookAhead.name;
+            match(lookAhead.name);
+        }
+
         if (lookAhead.type.equals("CONST")) {
+            if (lookAhead.name.startsWith("\"") || lookAhead.name.startsWith("\'"))
+                terminate("Cannot do arithmatic operations on strings and chars");
+
             printTabs(++tabs);
             writeToFile("CONST " + "(" + lookAhead.name + ")");
             toReturn = toReturn + lookAhead.name;
             match(lookAhead.name);
             tabs--;
             tabs--;
+
             return toReturn;
         } else if (tokenEquals("(")) {
             match("(");
             printTabs(++tabs);
             writeToFile("Operator (");
 
-            toReturn = Arithmetic();
+            String temp = Arithmetic();
+            tabs--;
+            if (temp.startsWith("-") && toReturn.equals("-"))
+                toReturn = temp.substring(1);
+            else
+                toReturn = toReturn + temp;
+            // toReturn = toReturn + Arithmetic();
 
             if (tokenEquals(")")) {
                 match(")");
@@ -568,7 +604,7 @@ public class Parser {
                 terminate(") missing");
             tabs--;
         } else
-            toReturn = Variable();
+            toReturn = toReturn + Variable();
         tabs--;
         return toReturn;
     }

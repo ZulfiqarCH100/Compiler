@@ -1,29 +1,9 @@
-0: my_char = 'd'
-1: OUT "my char contains: "
-2: OUT my_char
-3: OUT \n
-4: OUT "enter a number"
-5: OUT \n
-6: IN num
-7: a = 0
-8: b = 1
-9: c = 0
-10: OUT "The fibonacci seq is: "
-11: OUT \n
-12: OUT a
-13: OUT \n
-14: OUT b
-15: OUT \n
-16: IF c < num GOTO 18
-17: GOTO 29
-18: T0 = c + d
-19: T1 = b + T0
-20: T2 = a + T1
-21: temp = T2
-22: b = b - 1
-23: a = b
-24: b = temp
-25: OUT temp
-26: OUT \n
-27: c = c + 1
-28: GOTO 16
+0: a = 1
+1: b = 2
+2: IF a > b GOTO 4
+3: GOTO 8
+4: T0 = a + b
+5: c = T0
+6: OUT "Inside the loop"
+7: GOTO 8
+8: OUT "outside the loop"

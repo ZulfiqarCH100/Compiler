@@ -4,68 +4,18 @@ Declaration
 	Declaration 1
 		Declaration 2
 			Variable
-				Identifier (num)
+				Identifier (a)
+			Operator =
+			Assignment 2
+				Vals
+					CONST (3)
+				Arithmetic 2
+					DivMul 1
+						null
+				Arithmetic 1
+					null
 		Declaration 3
 			null
-	Operator ;
-Declaration
-	Datatype char
-	Operator :
-	Declaration 1
-		Declaration 2
-			Variable
-				Identifier (my_char)
-		Declaration 3
-			null
-	Operator ;
-Assignment
-	Variable
-		Identifier (my_char)
-	Operator =
-	Assignment 2
-		Arithmetic
-			DivMul
-				Vals
-					CONST ('d')
-				DivMul 1
-					null
-			Arithmetic 1
-				null
-	Operator ;
-I/O
-	print
-	Operator (
-	Message
-		CONST ("my char contains: ")
-	Operator )
-	Operator ;
-I/O
-	println
-	Operator (
-	Message
-		Arithmetic
-			DivMul
-				Vals
-					Variable
-						Identifier (my_char)
-				DivMul 1
-					null
-			Arithmetic 1
-				null
-	Operator )
-	Operator ;
-I/O
-	println
-	Operator (
-	Message
-		CONST ("enter a number")
-	Operator )
-	Operator ;
-I/O
-	Input
-	Operator ->
-	Variable
-		Identifier (num)
 	Operator ;
 Declaration
 	Datatype int
@@ -73,63 +23,22 @@ Declaration
 	Declaration 1
 		Declaration 2
 			Variable
-				Identifier (a)
+				Identifier (b)
 			Operator =
 			Assignment 2
-				Arithmetic
-					DivMul
-						Vals
-							CONST (0)
-						DivMul 1
-							null
-					Arithmetic 1
+				Vals
+					CONST (2)
+				Arithmetic 2
+					DivMul 1
 						null
+				Arithmetic 1
+					null
 		Declaration 3
-			Operator ,
-			Declaration 1
-				Declaration 2
-					Variable
-						Identifier (b)
-					Operator =
-					Assignment 2
-						Arithmetic
-							DivMul
-								Vals
-									CONST (1)
-								DivMul 1
-									null
-							Arithmetic 1
-								null
-				Declaration 3
-					Operator ,
-					Declaration 1
-						Declaration 2
-							Variable
-								Identifier (c)
-							Operator =
-							Assignment 2
-								Arithmetic
-									DivMul
-										Vals
-											CONST (0)
-										DivMul 1
-											null
-									Arithmetic 1
-										null
-						Declaration 3
-							null
+			null
 	Operator ;
-I/O
-	println
-	Operator (
-	Message
-		CONST ("The fibonacci seq is: ")
-	Operator )
-	Operator ;
-I/O
-	println
-	Operator (
-	Message
+Flow
+	IF
+	Expression
 		Arithmetic
 			DivMul
 				Vals
@@ -139,42 +48,13 @@ I/O
 					null
 			Arithmetic 1
 				null
-	Operator )
-	Operator ;
-I/O
-	println
-	Operator (
-	Message
+		Relation
+			Operator >
 		Arithmetic
 			DivMul
 				Vals
 					Variable
 						Identifier (b)
-				DivMul 1
-					null
-			Arithmetic 1
-				null
-	Operator )
-	Operator ;
-Loop
-	while
-	Expression
-		Arithmetic
-			DivMul
-				Vals
-					Variable
-						Identifier (c)
-				DivMul 1
-					null
-			Arithmetic 1
-				null
-		Relation
-			Operator <
-		Arithmetic
-			DivMul
-				Vals
-					Variable
-						Identifier (num)
 				DivMul 1
 					null
 			Arithmetic 1
@@ -187,7 +67,7 @@ Loop
 			Declaration 1
 				Declaration 2
 					Variable
-						Identifier (temp)
+						Identifier (c)
 					Operator =
 					Assignment 2
 						Variable
@@ -204,71 +84,24 @@ Loop
 								DivMul 1
 									null
 							Arithmetic 1
-								Operator +
-								DivMul
-									Vals
-										Variable
-											Identifier (c)
-									DivMul 1
-										null
-								Arithmetic 1
-									Operator +
-									DivMul
-										Vals
-											Variable
-												Identifier (d)
-										DivMul 1
-											null
-									Arithmetic 1
-										null
-						Declaration 3
-							null
-					Operator ;
-				Assignment
-					Variable
-						Identifier (a)
-					Operator =
-					Assignment 2
-						Variable
-							Operator --
-							Identifier (b)
-						Arithmetic 2
-							DivMul 1
 								null
-						Arithmetic 1
-							null
-					Operator ;
-				Assignment
-					Variable
-						Identifier (b)
-					Operator =
-					Assignment 2
-						Variable
-							Identifier (temp)
-						Arithmetic 2
-							DivMul 1
-								null
-						Arithmetic 1
-							null
-					Operator ;
-				I/O
-					println
-					Operator (
-					Message
-						Arithmetic
-							DivMul
-								Vals
-									Variable
-										Identifier (temp)
-								DivMul 1
-									null
-							Arithmetic 1
-								null
-					Operator )
-					Operator ;
-				Assignment
-					Variable
-						Identifier (c)
-						Operator ++
-					Operator ;
-			Operator }
+				Declaration 3
+					null
+			Operator ;
+		I/O
+			print
+			Operator (
+			Message
+				CONST ("Inside the loop")
+			Operator )
+			Operator ;
+	Operator }
+	Else/Elif
+		null
+	I/O
+		print
+		Operator (
+		Message
+			CONST ("outside the loop")
+		Operator )
+		Operator ;

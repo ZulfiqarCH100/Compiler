@@ -1,9 +1,4 @@
-a int 5
-b int 9
-temp int 17
-my_char char 4
-c int 13
-num int 0
-T0 int 21
-T1 int 25
-T2 int 29
+a int 0
+b int 4
+c int 8
+T0 int 12

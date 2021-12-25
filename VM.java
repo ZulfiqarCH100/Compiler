@@ -23,6 +23,12 @@ public class VM {
 
     boolean[] defined = null; // Contains info about a variable's value being defined or not.
 
+    private class Calculation {
+        String varA;
+        String varB;
+        String operation;
+    };
+
     private void print(String temp) {
         System.out.println(temp);
     }
@@ -30,6 +36,11 @@ public class VM {
     private void terminate(String error) {
         print(error);
         System.exit(1);
+    }
+
+    // Gets the type of a variable.
+    private String getType(String name) {
+        return symbolTable.get(name).type;
     }
 
     // Converts an int into an array of 4 bytes to store in the data array.
@@ -146,9 +157,9 @@ public class VM {
         }
         // Allocating space in data segment.
         if (maxType.equals("char"))
-            dataSize = max;
+            dataSize = max + 1;
         else
-            dataSize = max + 3;
+            dataSize = max + 4;
 
         data = new byte[dataSize];
         defined = new boolean[dataSize];
@@ -227,11 +238,18 @@ public class VM {
         int space = rest.indexOf(" ");
 
         if (space == -1) {
+            int negative = 1;
+            // Checking for negative.
+            if (rest.charAt(0) == '-') {
+                rest = rest.substring(1);
+                negative = -1;
+            }
+
             // Just assignment.
             if (rest.matches("[0-9]+")) {
                 // if right side is a constant int.
                 if (symbolTable.get(leftSideVar).type.equals("int")) {
-                    storeInt(leftSideVar, Integer.parseInt(rest));
+                    storeInt(leftSideVar, Integer.parseInt(rest) * negative); // Can also handle negative values.
                 } else
                     terminate("Cannot store int into a non int varible " + leftSideVar);
             } else if (rest.charAt(0) == '\'') {
@@ -250,15 +268,109 @@ public class VM {
                 String type = symbolTable.get(leftSideVar).type;
                 if (!type.equals(symbolTable.get(rest).type))
                     terminate("Type mismatch on line " + String.valueOf(currentLine));
-                else if (type.equals("int"))
-                    storeInt(leftSideVar, getInt(rest));
-                else if (type.equals("char"))
+                else if (type.equals("int")) {
+                    storeInt(leftSideVar, getInt(rest) * negative);
+
+                } else if (type.equals("char"))
                     storeChar(leftSideVar, getChar(rest));
             }
 
         } else {
-            // Calculation.
+            // Doing algebric expression.
+            if (getType(leftSideVar).equals("int")) {
+                int rightSide = algebra(calculation(rest));
+                storeInt(leftSideVar, rightSide);
+            } else {
+                terminate("Cannot store result of arithmatic into a char variable. Line no: "
+                        + String.valueOf(currentLine));
+            }
         }
+    }
+
+    // This funcition parses the three adress code in order to make calculation and
+    // comparisons easy to do.
+    private Calculation calculation(String expression) {
+        Calculation cal = new Calculation();
+        int space = expression.indexOf(" ");
+        cal.varA = expression.substring(0, space);
+        expression = expression.substring(space + 1);
+        space = expression.indexOf(" ");
+        cal.operation = expression.substring(0, space);
+
+        expression = expression.substring(space + 1);
+        cal.varB = expression.substring(0, expression.length());
+
+        return cal;
+    }
+
+    // Gets the values to be used in arithmatic operations.
+    private int getValue(String var) {
+        int negative = 1;
+        // Checking for negative.
+        if (var.charAt(0) == '-') {
+            var = var.substring(1);
+            negative = -1;
+        }
+
+        if (var.matches("[0-9]+")) {
+            return Integer.parseInt(var) * negative;
+        } else if (symbolTable.get(var).type.equals("int")) {
+            return getInt(var) * negative;
+        } else {
+            terminate("Line: " + String.valueOf(currentLine)
+                    + "Arithmatic operations can only be done on intgers for now, Terminating");
+        }
+        return -1;
+    }
+
+    private int algebra(Calculation cal) {
+        int valueA = getValue(cal.varA);
+        int valueB = getValue(cal.varB);
+
+        if (cal.operation.equals("+")) {
+            return valueA + valueB;
+        } else if (cal.operation.equals("-")) {
+            return valueA - valueB;
+        } else if (cal.operation.equals("*")) {
+            return valueA * valueB;
+        } else if (cal.operation.equals("/")) {
+            return valueA / valueB;
+
+        }
+        terminate("unidentified symbol. Line no: " + String.valueOf(currentLine));
+        return 0;
+    }
+
+    private boolean expression(Calculation cal) {
+        int valueA = getValue(cal.varA);
+        int valueB = getValue(cal.varB);
+
+        if (cal.operation.equals(">")) {
+            return valueA > valueB;
+        } else if (cal.operation.equals("<")) {
+            return valueA < valueB;
+        } else if (cal.operation.equals("==")) {
+            return valueA == valueB;
+        } else if (cal.operation.equals(">=")) {
+            return valueA >= valueB;
+        } else if (cal.operation.equals("<=")) {
+            return valueA <= valueB;
+        } else if (cal.operation.equals("!=")) {
+            return valueA != valueB;
+        }
+        terminate("unidentified symbol. Line no: " + String.valueOf(currentLine));
+        return false;
+    }
+
+    private int IF(String rest) {
+        String exp = rest.substring(0, rest.indexOf("G") - 1);
+        rest = rest.substring(rest.indexOf("T") + 3);
+        int ifTrue = Integer.parseInt(rest);
+
+        boolean result = expression(calculation(exp));
+        if (result)
+            return ifTrue;
+        return currentLine + 1;
     }
 
     // Execute the TAC.
@@ -284,9 +396,9 @@ public class VM {
                 IN(rest);
                 currentLine++;
             } else if (command.equals("GOTO")) {
-                // currentLine = GOTO(rest);
-                // TODO: Remove the line below.
-                currentLine++;
+                currentLine = GOTO(rest);
+            } else if (command.equals("IF")) {
+                currentLine = IF(rest);
             } else {
                 assignment(rest, command);
                 currentLine++;
