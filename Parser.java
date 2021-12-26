@@ -915,7 +915,7 @@ public class Parser {
         myParser.reader = new BufferedReader(myParser.fr);
         myParser.lookAhead = myParser.getNextToken();
         myParser.Code();
-        System.out.println(Colors.GREEN_BOLD + "Code Parsing Successful!" + Colors.RESET);
+        System.out.println(Colors.GREEN_BOLD_BRIGHT + "Code Parsing Successful!" + Colors.RESET);
 
         myParser.printSymbolTable();
         myParser.printTAC();

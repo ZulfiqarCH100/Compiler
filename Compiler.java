@@ -30,7 +30,7 @@ public class Compiler {
         myParser.reader = new BufferedReader(myParser.fr);
         myParser.lookAhead = myParser.getNextToken();
         myParser.Code();
-        System.out.println("\nCode Parsing Successful!");
+        System.out.println(Colors.GREEN_BOLD + "Code Parsing Successful!" + Colors.RESET);
         myParser.printSymbolTable();
         myParser.printTAC();
 

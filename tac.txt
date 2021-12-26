@@ -1,4 +1,16 @@
-0: temp = 'h'
-1: temp = 'g'
-2: OUT temp
-3: OUT \n
+0: a = 10
+1: IF a < 11 GOTO 3
+2: GOTO 6
+3: OUT "First IF"
+4: OUT \n
+5: GOTO 11
+6: ELIF a < 5 GOTO 8
+7: GOTO 11
+8: OUT "ELIF 1"
+9: OUT \n
+10: GOTO 11
+11: IF a == 10 GOTO 13
+12: GOTO 16
+13: OUT "Second IF"
+14: OUT \n
+15: GOTO 16

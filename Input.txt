@@ -1,3 +1,11 @@
-char: temp = 'h';
-temp = 'g';
-println (temp);
+int: a = 10;
+
+if a < 11: {
+   println ("First IF");
+}
+elif a < 5:{
+   println ("ELIF 1");
+}
+if a == 10: {
+   println ("Second IF");
+}
