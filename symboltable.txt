@@ -1,4 +1,1 @@
-a int 0
-b int 4
-c int 8
-T0 int 12
+c char 0

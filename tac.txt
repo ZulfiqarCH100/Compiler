@@ -1,9 +1,1 @@
-0: a = 3
-1: b = 2
-2: IF a > b GOTO 4
-3: GOTO 8
-4: T0 = a + b
-5: c = T0
-6: OUT "Inside the loop"
-7: GOTO 8
-8: OUT "outside the loop"
+0: c = 2

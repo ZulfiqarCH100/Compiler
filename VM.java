@@ -123,7 +123,7 @@ public class VM {
     public void readSymbolTable() {
         setFileReader("symboltable.txt");
         reader = new BufferedReader(fr);
-        int max = 0;
+        int max = -1;
         String maxType = null;
 
         while (true) {
@@ -155,17 +155,19 @@ public class VM {
                 e.printStackTrace();
             }
         }
-        // Allocating space in data segment.
-        if (maxType.equals("char"))
-            dataSize = max + 1;
-        else
-            dataSize = max + 4;
+        if (max >= 0) {
+            // Allocating space in data segment.
+            if (maxType.equals("char"))
+                dataSize = max + 1;
+            else
+                dataSize = max + 4;
 
-        data = new byte[dataSize];
-        defined = new boolean[dataSize];
+            data = new byte[dataSize];
+            defined = new boolean[dataSize];
 
-        for (int i = 0; i < dataSize; i++) {
-            defined[i] = false;
+            for (int i = 0; i < dataSize; i++) {
+                defined[i] = false;
+            }
         }
     }
 
@@ -317,8 +319,8 @@ public class VM {
         } else if (symbolTable.get(var).type.equals("int")) {
             return getInt(var) * negative;
         } else {
-            terminate("Line: " + String.valueOf(currentLine)
-                    + "Arithmatic operations can only be done on intgers for now, Terminating");
+            terminate("Line " + String.valueOf(currentLine)
+                    + ": Arithmatic operations can only be done on intgers for now, Terminating");
         }
         return -1;
     }

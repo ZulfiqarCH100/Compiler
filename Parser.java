@@ -222,6 +222,9 @@ public class Parser {
 
             if (newSymbol)
                 name = lookAhead.name;
+            else if (!symbolTable.containsKey(lookAhead.name)) {
+                terminate("Variable " + lookAhead.name + " is used but never defined");
+            }
 
             varName = lookAhead.name;
             match(lookAhead.name);

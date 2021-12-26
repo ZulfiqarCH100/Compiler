@@ -1,7 +1,1 @@
-int: a = 3;
-int: b = 2;
-if a > b: {
-   int: c = a + b; 
-   print ("Inside the loop");
-}
-print("outside the loop");
+char: c = 2;
