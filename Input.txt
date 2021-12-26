@@ -1,1 +1,3 @@
-char: c = 2;
+char: temp = 'h';
+temp = 'g';
+println (temp);

@@ -1,1 +1,4 @@
-0: c = 2
+0: temp = 'h'
+1: temp = 'g'
+2: OUT temp
+3: OUT \n

@@ -34,7 +34,7 @@ public class VM {
     }
 
     private void terminate(String error) {
-        print(error);
+        System.out.println(Colors.RED_BOLD + error + Colors.RESET);
         System.exit(1);
     }
 
@@ -393,7 +393,7 @@ public class VM {
                 OUT(rest);
                 currentLine++;
             } else if (command.equals("end"))
-                terminate("Code execution completed");
+                terminate(Colors.GREEN_BOLD + "Code execution completed successfully" + Colors.RESET);
             else if (command.equals("IN")) {
                 IN(rest);
                 currentLine++;

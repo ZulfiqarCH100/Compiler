@@ -25,7 +25,7 @@ public class Parser {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
-                System.out.println("File already exists.");
+                System.out.println("File parsetree.txt already exists, writing to existing file.");
             }
             parsetree = new FileWriter("parsetree.txt");
         } catch (IOException e) {
@@ -35,12 +35,8 @@ public class Parser {
 
     }
 
-    private void print(String temp) {
-        System.out.println(temp);
-    }
-
     private void terminate(String error) {
-        print(error);
+        System.out.println(Colors.RED_BOLD + error + Colors.RESET);
         System.exit(1);
     }
 
@@ -865,7 +861,7 @@ public class Parser {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
-                System.out.println("File already exists.");
+                System.out.println("File symboltable.txt already exists, writing to existing file");
             }
 
             // Writing to the file.
@@ -896,7 +892,7 @@ public class Parser {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
-                System.out.println("File already exists.");
+                System.out.println("File tac.txt already exists, writing to existing file");
             }
 
             // Writing to the file.
@@ -919,7 +915,7 @@ public class Parser {
         myParser.reader = new BufferedReader(myParser.fr);
         myParser.lookAhead = myParser.getNextToken();
         myParser.Code();
-        System.out.println("\nCode Parsing Successful!");
+        System.out.println(Colors.GREEN_BOLD + "Code Parsing Successful!" + Colors.RESET);
 
         myParser.printSymbolTable();
         myParser.printTAC();

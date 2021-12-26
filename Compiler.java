@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 
 public class Compiler {
     public static void main(String[] args) {
-        Parser myParser = new Parser();
+
         VM myVm = new VM();
 
         // For Lexer.
-        System.out.println("::LEXER::\n");
+        System.out.println(Colors.GREEN_BOLD_BRIGHT + "\n::LEXER::\n" + Colors.RESET);
 
         String filename = "Input.txt";
         if (args.length == 1)
@@ -24,7 +24,8 @@ public class Compiler {
         }
 
         // For Parser.
-        System.out.println("\n\n::PARSER::\n");
+        System.out.println(Colors.CYAN_BOLD_BRIGHT + "\n\n::PARSER::\n" + Colors.RESET);
+        Parser myParser = new Parser();
         myParser.setFileReader("Output.txt");
         myParser.reader = new BufferedReader(myParser.fr);
         myParser.lookAhead = myParser.getNextToken();
@@ -34,7 +35,7 @@ public class Compiler {
         myParser.printTAC();
 
         // For Virtual Machine.
-        System.out.println("\n\n::VIRTUAL MACHINE::\n");
+        System.out.println(Colors.YELLOW_BOLD_BRIGHT + "\n\n::VIRTUAL MACHINE::\n" + Colors.RESET);
         myVm.readTAC();
         myVm.readSymbolTable();
         myVm.execute();
